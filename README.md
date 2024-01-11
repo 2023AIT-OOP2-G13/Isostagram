@@ -6,8 +6,8 @@
 
     <HTTP>
     塚本:HTTP_main
-    羽塚:
-    星
+    羽塚:top_HTML
+    星:contents_HTML
     下川:upload_HTML
 
     <プログラム>
