@@ -93,9 +93,12 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         upload_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 
         #csvファイルの保存
-        with open('static/csv_file/'+upload_time+'.csv', 'w') as f:
-            writer = csv.writer(f)
-
+        # with open('static/csv_file/'+upload_time+'.csv', 'w') as f:
+        #     writer = csv.writer(f)
+        #csvファイルのリネーム
+        oldpath = 'static/csv_file/sample.csv'
+        newpath = 'static/csv_file/'+upload_time+'.csv'
+        os.rename(oldpath, newpath)
         #画像ファイルのリネーム
         oldpath = filepath
         newpath = 'static/image_file/'+upload_time+'.jpg'
@@ -120,7 +123,7 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, DIR_WATCH, recursive=True)
     observer.start()
-
+    app.run(debug=False)
     try:
         while True:
             time.sleep(1)
