@@ -13,15 +13,6 @@
         <h1>isostagram</h1>
         <a href="/upload">upload</a>
     </header>
-    <ul>
-        {% for image in uplode_images %}
-
-            <li>
-                <a href="/templates/post.html">
-                    <img src="{{ url_for('static', filename='uplode/' + image) }}" alt="{{ image }}">
-                </a>
-            </li>
-            <a href="/templates/post.html">無題</a>
 
     <ul>
         {% for data in image_data %}
