@@ -19,13 +19,19 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #トップページのルティング
 @app.route('/')
 def top_page():
-    #staticからファイルを取得
-    files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*'))
-    #uploaded_imagesにファイルを格納
-    uploaded_images = [os.path.basename(file) for file in files]
-    
+    # #staticからファイルを取得
+    # files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*'))
+    # #uploaded_imagesにファイルを格納
+    # uploaded_images = [os.path.basename(file) for file in files]
 
-    return render_template('top_page.html',uploaded_images = uploaded_images)
+    image_data = []
+    for filename in os.listdir(UPLOAD_FOLDER):
+        if filename.endswith(('.jpg', '.png', '.jpeg','.JPG')):
+            name = filename.split('.')[0]  # 拡張子を除いたファイル名を取得
+            image_data.append({'name': name, 'filename': filename})
+    print(image_data)
+
+    return render_template('top_page.html',image_data = image_data)
 
 
 
@@ -64,9 +70,10 @@ def image_uplode():
 def contents_page():
     lines = []
     #with openしてcsvファイルを読み込む
-    with open('static/csv_file/sample.csv',encoding='utf-8') as f:
+    with open('static/csv_file/20240118145159.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
-    return render_template('contents_page.html',lines=lines)
+        print(lines)
+    return render_template('post.html',lines=lines)
 
 @app.route('/result',methods=['POST'])
 def result():
@@ -74,7 +81,7 @@ def result():
     article = request.form['article']
     name = request.form['name']
     #csvファイルに上書きモードで書き込む
-    with open('static/csv_file/sample.csv','a',encoding='utf-8') as f:
+    with open('static/csv_file/20240118145159.csv','a',encoding='utf-8') as f:
         f.write(name + ',' + article + '\n')
     #result.htmlに返す
     return render_template('result.html')
