@@ -59,8 +59,6 @@ def image_uplode():
         f.close()
 
     return render_template('upload.html')
-    
-
 
 @app.route('/contents')
 def contents_page():
@@ -83,7 +81,6 @@ def result():
 
 # if __name__ == '__main__':
 #      app.run(debug=False) 
-
 #DIR_WATCH内のファイルに何かあったときの処理
 #現在はファイルが入ってきた時のみ。
 class MyFileWatchHandler(PatternMatchingEventHandler):
