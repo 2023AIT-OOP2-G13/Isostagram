@@ -101,12 +101,12 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         os.rename(oldpath, newpath)
         
 
-# def csv_comment_view():
-#     filename = 'static/csv_file/sample.csv'
-#     with open(filename) as f:
-#         csvreader = csv.reader(f)
-#         for row in csvreader:
-#             print(row)
+def csv_comment_view():
+    filename = 'static/csv_file/sample.csv'
+    with open(filename) as f:
+        csvreader = csv.reader(f)
+        for row in csvreader:
+            print(row)
 
 if __name__ == "__main__":
     #監視するファイルの指定
