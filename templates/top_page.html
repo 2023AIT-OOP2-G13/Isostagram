@@ -18,7 +18,7 @@
         {% for data in image_data %}
         <li>
             <a href="/contents">Name: {{ data['name'] }}</a>
-            <img src="{{ url_for('static', filename='images/' + data['filename']) }}" alt="{{ data['name'] }}">
+            <img src="{{ url_for('static', filename='image_file/' + data['filename']) }}" alt="{{ data['name'] }}">
         </li>
         {% endfor %}
     </ul>
