@@ -95,11 +95,7 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         #csvファイルの保存
         # with open('static/csv_file/'+upload_time+'.csv', 'w') as f:
         #     writer = csv.writer(f)
-<<<<<<< Updated upstream
         #csvファイルのリネーム
-=======
-
->>>>>>> Stashed changes
         oldpath = 'static/csv_file/sample.csv'
         newpath = 'static/csv_file/'+upload_time+'.csv'
         os.rename(oldpath, newpath)
@@ -127,12 +123,7 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, DIR_WATCH, recursive=True)
     observer.start()
-<<<<<<< Updated upstream
     app.run(debug=False)
-=======
-    app.run(debug=False) 
-
->>>>>>> Stashed changes
     try:
         while True:
             time.sleep(1)
