@@ -53,9 +53,14 @@ def image_uplode():
     #保存
     file.save(filename)
 
-
-    header = ['name', 'article']
-    body = []
+    #header = ['name', 'article']
+    #アップロード時のコメント保存
+    text = request.form.get('text_input', None)
+    header = ['0']
+    if text != None :
+        body = [text]
+    else :
+        body = [""]
 
     #csvフィル作成
     with open('static/csv_file/sample.csv' ,'w') as f:
@@ -86,10 +91,6 @@ def result():
     #result.htmlに返す
     return render_template('result.html')
 
-# if __name__ == '__main__':
-#      app.run(debug=False) 
-#DIR_WATCH内のファイルに何かあったときの処理
-#現在はファイルが入ってきた時のみ。
 class MyFileWatchHandler(PatternMatchingEventHandler):
     def on_created(self, event):
         filepath = event.src_path
@@ -111,14 +112,13 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         newpath = 'static/image_file/'+upload_time+'.jpg'
         os.rename(oldpath, newpath)
         
-        
-#app = Flask(__name__)
-# def csv_comment_view():
-#     filename = 'static/csv_file/sample.csv'
-#     with open(filename) as f:
-#         csvreader = csv.reader(f)
-#         for row in csvreader:
-#             print(row)
+
+def csv_comment_view():
+    filename = 'static/csv_file/sample.csv'
+    with open(filename) as f:
+        csvreader = csv.reader(f)
+        for row in csvreader:
+            print(row)
 
 if __name__ == "__main__":
     #監視するファイルの指定
