@@ -4,6 +4,7 @@ import datetime
 import csv
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
+from flask import Flask
 
 #DIR_WATCH内のファイルに何かあったときの処理
 #現在はファイルが入ってきた時のみ。
@@ -24,6 +25,15 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         oldpath = filepath
         newpath = 'static/image_file/'+upload_time+'.jpg'
         os.rename(oldpath, newpath)
+        
+        
+app = Flask(__name__)
+def csv_comment_view():
+    filename = 'static/csv_file/sample.csv'
+    with open(filename) as f:
+        csvreader = csv.reader(f)
+        for row in csvreader:
+            print(row)
 
 if __name__ == "__main__":
     #監視するファイルの指定
@@ -43,3 +53,4 @@ if __name__ == "__main__":
         observer.stop()
 
     observer.join()
+    csv_comment_view()
