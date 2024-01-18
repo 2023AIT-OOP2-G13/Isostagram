@@ -47,9 +47,14 @@ def image_uplode():
     #保存
     file.save(filename)
 
-
-    header = ['name', 'article']
-    body = []
+    #header = ['name', 'article']
+    #アップロード時のコメント保存
+    text = request.form.get('text_input', None)
+    header = ['0']
+    if text != None :
+        body = [text]
+    else :
+        body = [""]
 
     #csvフィル作成
     with open('static/csv_file/sample.csv' ,'w') as f:
