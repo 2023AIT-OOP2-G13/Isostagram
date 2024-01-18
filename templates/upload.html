@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <form action="/up" method="POST" enctype="multipart/form-data">
+        <div class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>投稿(アップロード)</p>
+            <input type="file" name="upload_file" id="input-files">
+        </div>
+        <label for="text-input">入力欄:</label>
+        <textarea name="text_input" id="text-input" rows="4" cols="50"></textarea>
+        <input type="submit" id="submit-btn" value="送信">
+        <ul>
+            <li><a class="active" href="#home">Home</a></li>
+            <li><a href="#sample1">Sample1</a></li>
+            <li><a href="#sample2">Sample2</a></li>
+            <li><a href="#sample3">Sample3</a></li>
+        </ul>
+    </form>
+</body>
+
+</html>

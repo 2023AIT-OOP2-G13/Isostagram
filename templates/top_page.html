@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>isostagram</title>
+
+</head>
+
+<body>
+    <header>
+        <h1>isostagram</h1>
+        <a href="/upload">upload</a>
+    </header>
+    <ul>
+        {% for image in uplode_images %}
+        <li><img src="{{ url_for('static', filename='uplode/' + image) }}" alt="{{ image }}"></li>
+        <a href="/contacts_page">無題</a>
+
+        {% if loop.index % 4 == 0 %}
+        <br>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        <li><a class="active" href="#top_page">ホーム</a></li>
+        <li><a href="#upload">投稿(アップロード)</a></li>
+        <!-- <li><a href="#sample2"></a></li>
+        <li><a href="#sample3">Sample3</a></li> -->
+    </ul>
+</body>
+
+</html>
