@@ -1,5 +1,5 @@
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <html lang="ja">
   <head>
     <meta charset="UTF-8">
@@ -7,26 +7,56 @@
     <title></title>
   </head>
   <body>
-      <img src = "2023101111423.png" alt="外部の画像">
+    <header>
+        <h1>isostagram</h1>
+    </header>
+     
       
-      <p></p>
-      <dl class="thread" style="margin-top: 0px;">
-          <dd title="" style=""><form method="POST" action="../test/bbs.cgi">
-              <input type="hidden" name="bbs" value="be">
-              <input type="hidden" name="key" value="1546275516">
-              <input type="hidden" name="time" value="1702989027">
-              <label>名前：<input name="FROM" size="19"></label>
-              <br><textarea rows="15" cols="164" wrap="ON" name="MESSAGE"></textarea></form>
-  
-             
-          </dd>
-          <div id=""fb-root></div>
-          <script async defer crossorigin="anonymous"
-          src=""></script>      
-  
-  
-          <input type="submit" value="投稿" name="submit"> 
-      </dl>
+      <form action="" method="POST" enctype="multipart/form-data">
+            <div class="upload-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>コメント投稿</p>
+           
+            </div>
+
+        
+        
+            <div class="upload-area">
+           
+                <p>
+                　　 <img src = "20240111154934.jpg" alt="外部の画像">
+                </p>
+            </div>
+            <table border=1>
+                <tr><th>名前</th><th>コメント</th></tr>
+                {% for line in lines: %}
+                    {% set column = line.rstrip().split(',') %}
+                    <tr><td>{column[0]}</td><td>{column[1]}</td></tr>
+                {% endfor %}
+            </table>
+
+            <dl class="thread" style="margin-top: 0px;">
+                <dd title="" style=""><form method="POST" action="../test/bbs.cgi">
+                    <input type="hidden" name="bbs" value="be">
+                    <input type="hidden" name="key" value="1546275516">
+                    <input type="hidden" name="time" value="1702989027">
+                    <label>名前：<input name="FROM" size="19"></label>
+                    <br><textarea rows="8" cols="70" wrap="ON" name="MESSAGE"></textarea></form>
       
+                 
+                </dd>
+
+                <div id=""fb-root></div>
+                <script async defer crossorigin="anonymous"
+                src=""></script>      
+      
+                <input type="submit" value="投稿" name="submit"> 
+                 <ul>
+                    <li><a class="active" href="#top_page">ホーム</a></li>
+                    <li><a href="#upload">投稿(アップロード)</a></li>
+                </ul>
+            </dl>
+    
+    </form>
   </body>
   </html>
