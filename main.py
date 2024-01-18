@@ -75,7 +75,7 @@ def image_uplode():
 def contents_page():
     lines = []
     #with openしてcsvファイルを読み込む
-    with open('static/csv_file/20240118145159.csv',encoding='utf-8') as f:
+    with open('static/csv_file/sample.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
         print(lines)
     return render_template('post.html',lines=lines)
@@ -86,7 +86,7 @@ def result():
     article = request.form['article']
     name = request.form['name']
     #csvファイルに上書きモードで書き込む
-    with open('static/csv_file/20240118145159.csv','a',encoding='utf-8') as f:
+    with open('static/csv_file/sample.csv','a',encoding='utf-8') as f:
         f.write(name + ',' + article + '\n')
     #result.htmlに返す
     return render_template('result.html')

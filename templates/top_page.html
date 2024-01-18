@@ -12,11 +12,26 @@
     <header>
         <h1>isostagram</h1>
     </header>
-
     <ul>
         {% for data in image_data %}
         <li>
             <a href="/contents">Name: {{ data['name'] }}</a>
+            <img src="{{ url_for('static', filename='images/' + data['filename']) }}" width="100%" height="225"
+                alt="{{ data['name'] }}">
+        </li>
+        {% endfor %}
+    </ul>
+    <li><a class="active" href="#top_page">ホーム</a></li>
+    <li><a href="#upload">投稿(アップロード)</a></li>
+    <!-- <li><a href="#sample2"></a></li>
+    <ul>
+
+        <!-- <li><a class="active" href="#top_page">ホーム</a></li> -->
+    <li><a href="/upload">投稿(アップロード)</a></li>
+
+    <!-- <li><a href="#sample2"></a></li>
+        <li><a href="#sample3">Sample3</a></li> -->
+    </ul>
             <img src="{{ url_for('static', filename='image_file/' + data['filename']) }}"width="25%" height="225" alt="{{ data['name'] }}">
         </li>
         {% endfor %}
