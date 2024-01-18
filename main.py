@@ -33,7 +33,7 @@ def top_page():
 @app.route('/upload')
 def upload_page():
     
-    return render_template('upload_page.html')
+    return render_template('upload.html')
 
 
 #アップロードされた画像の保存とcsvファイルの作成
@@ -58,7 +58,7 @@ def image_uplode():
         writer.writerows(body)
         f.close()
 
-    return render_template('upload_page.html')
+    return render_template('upload.html')
     
 
 
@@ -82,7 +82,7 @@ def result():
     return render_template('result.html')
 
 # if __name__ == '__main__':
-#     app.run(debug=False) 
+#      app.run(debug=False) 
 
 #DIR_WATCH内のファイルに何かあったときの処理
 #現在はファイルが入ってきた時のみ。
@@ -105,13 +105,13 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         os.rename(oldpath, newpath)
         
         
-app = Flask(__name__)
-def csv_comment_view():
-    filename = 'static/csv_file/sample.csv'
-    with open(filename) as f:
-        csvreader = csv.reader(f)
-        for row in csvreader:
-            print(row)
+#app = Flask(__name__)
+# def csv_comment_view():
+#     filename = 'static/csv_file/sample.csv'
+#     with open(filename) as f:
+#         csvreader = csv.reader(f)
+#         for row in csvreader:
+#             print(row)
 
 if __name__ == "__main__":
     #監視するファイルの指定
@@ -131,4 +131,4 @@ if __name__ == "__main__":
         observer.stop()
 
     observer.join()
-    csv_comment_view()
+    #csv_comment_view()
