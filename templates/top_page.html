@@ -13,14 +13,13 @@
         <h1>isostagram</h1>
     </header>
     <ul>
+        <li><a href="/upload">投稿(アップロード)</a></li>
         {% for data in image_data %}
         <li>
             <a href="/contents">Name: {{ data['name'] }}</a>
-            <img src="{{ url_for('static', filename='images/' + data['filename']) }}" width="100%" height="225"
+            <img src="{{ url_for('static', filename='image_file/' + data['filename']) }}" width="25%" height="225"
                 alt="{{ data['name'] }}">
         </li>
-        <li><a class="active" href="#top_page">ホーム</a></li>
-        <li><a href="/upload">投稿(アップロード)</a></li>
         {% endfor %}
     </ul>
     <li><a href="/upload">投稿(アップロード)</a></li>
