@@ -53,42 +53,50 @@ def image_uplode():
     #保存
     file.save(filename)
 
-    #header = ['name', 'article']
+
     #アップロード時のコメント保存
     text = request.form.get('text_input', None)
-    header = ['0']
+    header = ['ユーザー名', '投稿内容','0']
     if text != None :
-        body = [text]
+        header.append(text)
     else :
-        body = [""]
+        header.append("")
 
     #csvフィル作成
     with open('static/csv_file/sample.csv' ,'w') as f:
         writer = csv.writer(f)
         writer.writerow(header)
-        writer.writerows(body)
         f.close()
 
     return render_template('upload.html')
 
-@app.route('/contents')
-def contents_page():
+@app.route('/get_image_name/<image_name>')
+def contents_page(image_name):
     lines = []
+    image=image_name+'.jpg'
+
     #with openしてcsvファイルを読み込む
-    with open('static/csv_file/20240118145159.csv',encoding='utf-8') as f:
+    with open('static/csv_file/'+image_name+'.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
-        print(lines)
-    return render_template('post.html',lines=lines)
+
+    return render_template('post.html',lines=lines ,image_name=image_name,image=image)
+
 
 @app.route('/result',methods=['POST'])
 def result():
     #requestでarticleとnameの値を取得する
     article = request.form['article']
     name = request.form['name']
+    image_name=request.form['image_name']
     #csvファイルに上書きモードで書き込む
-    with open('static/csv_file/20240118145159.csv','a',encoding='utf-8') as f:
+    with open('static/csv_file/'+image_name+'.csv','a',encoding='utf-8') as f:
         f.write(name + ',' + article + '\n')
     #result.htmlに返す
+    return render_template('result.html',image_name=image_name)
+
+@app.route('/get_image_name/<image_name>')
+def get_image_name(image_name):
+
     return render_template('result.html')
 
 class MyFileWatchHandler(PatternMatchingEventHandler):

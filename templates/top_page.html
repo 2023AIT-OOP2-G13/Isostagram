@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>isostagram</title>
-
 </head>
 
 <body>
     <header>
         <h1>isostagram</h1>
+        <a href="/upload">upload</a>
     </header>
-
     <ul>
         {% for data in image_data %}
         <li>
-            <a href="/contents">Name: {{ data['name'] }}</a>
-            <img src="{{ url_for('static', filename='image_file/' + data['filename']) }}"width="25%" height="225" alt="{{ data['name'] }}">
+            <a href="{{ url_for('get_image_name', image_name=data['name']) }}">Name: {{ data['name'] }}</a>
+            <img src="{{ url_for('static', filename='image_file/' + data['filename']) }}" width="25%" height="225"
+                alt="{{ data['name'] }}">
         </li>
         {% endfor %}
     </ul>
-    <li><a href="/upload">投稿(アップロード)</a></li>
+    </ul>
 </body>
 
 </html>
