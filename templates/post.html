@@ -11,56 +11,93 @@
 <body>
     <header>
         <h1>isostagram</h1>
-    </header> 
-      
-      <form action="" method="POST" enctype="multipart/form-data">
-            <div class="upload-area">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>コメント投稿</p>
-           
-            </div>
-            
-            <div class="upload-area">
-           
-                <p>
-                    <img src = "20240111154934.jpg" alt="外部の画像">
-                </p>
-            </div>
-            <table border=1>
-                <tr><th>名前</th><th>コメント</th></tr>
-                {% for line in lines: %}
-                    {% set column = line.rstrip().split(',') %}
-                    <tr><td>{column[0]}</td><td>{column[1]}</td></tr>
-                {% endfor %}
-            </table>
+        {% set column = lines[0].rstrip().split(',') %}
+        <p>{{column[3]}}</p>
+        <img src="{{ url_for('static', filename='image_file/' + image) }}" width="25%" height="225">
+        <p>いいね数：{{column[2]}}</p>
+    </header>
 
-            <dl class="thread" style="margin-top: 0px;">
-                <dd title="" style=""><form method="POST" action="../test/bbs.cgi">
-                    <input type="hidden" name="bbs" value="be">
-                    <input type="hidden" name="key" value="1546275516">
-                    <input type="hidden" name="time" value="1702989027">
-                    <label>名前：<input name="FROM" size="19"></label>
-                    <br><textarea rows="8" cols="70" wrap="ON" name="MESSAGE"></textarea></form>
-      
-                 
-                </dd>
+    <form action="/result" method="POST" enctype="multipart/form-data">
+        <div class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>コメント投稿</p>
 
-                <div id=""fb-root></div>
-                <script async defer crossorigin="anonymous"
-                src=""></script>      
-      
+        </div>
 
 
-                <form action="/">
-                    <button class="btn">投稿</button>
-                  </form>
-                 <ul>
-                    <li><a class="active" href="/">ホーム</a></li>
-                    <li><a href="/upload">投稿(アップロード)</a></li>
-                </ul>
-            </dl>
-    
+
+        <div class="upload-area">
+
+            <p>
+                <img src="20240111154934.jpg" alt="外部の画像">
+            </p>
+        </div>
+        <table border=1>
+            <tr>
+                <th>名前</th>
+                <th>投稿内容</th>
+            </tr>
+            {% for line in lines: %}
+            <!--columnという変数をセット（変数セットにはsetが必要）  -->
+            <!--splitを利用して,で分類する。splitはリストを返す  -->
+            {% set column = line.rstrip().split(',') %}
+            <tr>
+                <td>{{column[0]}}</td>
+                <td>{{column[1]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form action='/result' method='post'>
+            <label for='name'>名前</label>
+            <input type='text' name='name'>
+            <p></p>
+            <label for='article'>投稿</label>
+            <input type='text' name='article'>
+
+            <button type='subimit'>書き込む</button>
+        </form>
+
+
+        <dl class="thread" style="margin-top: 0px;">
+
+            <div id="" fb-root></div>
+            <script async defer crossorigin="anonymous" src=""></script>
+
+            <input type="submit" value="投稿" name="submit">
+            <ul>
+                <li><a class="active" href="/">ホーム</a></li>
+                <li><a href="/upload">投稿(アップロード)</a></li>
+            </ul>
+        </dl>
+<!--     <form action="/result" method="post">
+        <label for="username">ユーザー名:</label>
+        <input type="text" id="username" name="name" required><br>
+        <label for="message">メッセージ:</label>
+        <textarea rows="8" cols="70" id="message" name="article" required></textarea><br>
+        <input type="hidden" name="image_name" value="{{ image_name }}">
+        <button type="submit">投稿</button>
     </form>
+
+
+    <table border=1>
+        {% for line in lines: %}
+        {% set column = line.rstrip().split(',') %}
+        <tr>
+            <td>{{column[0]}}</td>
+            <td>{{column[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <ul>
+        <li><a class="active" href="/">ホーム</a></li>
+        <li><a href="/upload">投稿(アップロード)</a></li>
+    </ul>
+    </dl>
+
+    </form> -->
 </body>
 
 </html>
