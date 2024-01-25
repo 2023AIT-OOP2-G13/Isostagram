@@ -41,7 +41,6 @@ def top_page():
 def upload_page():
     
     return render_template('upload.html',initial_count=count_manager.initial_count)
-    return render_template('upload.html',initial_count=count_manager.initial_count)
 
 
 #アップロードされた画像の保存とcsvファイルの作成
@@ -188,28 +187,6 @@ class CountManager:
         except FileNotFoundError:
             # ファイルが見つからない場合などのエラー処理
             print("CSV file not found.")
-
-
-# CountManagerのインスタンスを作成
-count_manager = CountManager()
-
-@app.route('/update_count', methods=['POST'])
-def update_count():
-    global initial_count
-    data = request.get_json()
-    new_count = data.get('count', 0)
-
-    # カウントを更新
-    count_manager.initial_count = new_count
-
-    # CSVに書き込み
-    with open('static/csv_file/sample.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([new_count])
-
-    return jsonify(success=True)
-
-
         
 #app = Flask(__name__)
 # def csv_comment_view():
