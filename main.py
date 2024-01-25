@@ -93,10 +93,11 @@ def result():
     article = request.form['article']
     name = request.form['name']
     image_name=request.form['image_name']
+    upload_time = datetime.datetime.now().strftime('%Y %m/%d %H:%M:%S')
     #csvファイルに上書きモードで書き込む
     with open('static/csv_file/'+image_name+'.csv','a',encoding='utf-8') as f:
 #     with open('static/csv_file/sample.csv','a',encoding='utf-8') as f:
-        f.write(name + ',' + article + '\n')
+        f.write(name + ',' + article + ','+upload_time+'\n')
     #result.htmlに返す
     return render_template('result.html',image_name=image_name)
 
