@@ -10,8 +10,11 @@
 <body>
     <header>
         <h1>isostagram</h1>
+        {% set column = lines[0].rstrip().split(',') %}
+        <p>{{column[3]}}</p>
+        <img src="{{ url_for('static', filename='image_file/' + image) }}" width="25%" height="225">
+        <p>いいね数：{{column[2]}}</p>
     </header>
-
 
     <form action="/result" method="POST" enctype="multipart/form-data">
         <div class="upload-area">
@@ -66,6 +69,34 @@
                 <li><a href="/upload">投稿(アップロード)</a></li>
             </ul>
         </dl>
+<!--     <form action="/result" method="post">
+        <label for="username">ユーザー名:</label>
+        <input type="text" id="username" name="name" required><br>
+        <label for="message">メッセージ:</label>
+        <textarea rows="8" cols="70" id="message" name="article" required></textarea><br>
+        <input type="hidden" name="image_name" value="{{ image_name }}">
+        <button type="submit">投稿</button>
+    </form>
+
+
+    <table border=1>
+        {% for line in lines: %}
+        {% set column = line.rstrip().split(',') %}
+        <tr>
+            <td>{{column[0]}}</td>
+            <td>{{column[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <ul>
+        <li><a class="active" href="/">ホーム</a></li>
+        <li><a href="/upload">投稿(アップロード)</a></li>
+    </ul>
+    </dl>
+
+    </form> -->
 </body>
 
 </html>
