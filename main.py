@@ -77,6 +77,7 @@ def contents_page(image_name):
 
     #with openしてcsvファイルを読み込む
     with open('static/csv_file/'+image_name+'.csv',encoding='utf-8') as f:
+#     with open('static/csv_file/sample.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
 
     return render_template('post.html',lines=lines ,image_name=image_name,image=image)
@@ -90,6 +91,7 @@ def result():
     image_name=request.form['image_name']
     #csvファイルに上書きモードで書き込む
     with open('static/csv_file/'+image_name+'.csv','a',encoding='utf-8') as f:
+#     with open('static/csv_file/sample.csv','a',encoding='utf-8') as f:
         f.write(name + ',' + article + '\n')
     #result.htmlに返す
     return render_template('result.html',image_name=image_name)
