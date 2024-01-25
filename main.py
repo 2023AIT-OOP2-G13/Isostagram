@@ -8,6 +8,8 @@ from flask import Flask
 import time
 import datetime
 
+iine_rank = []
+day_rank = []
 
 app = Flask(__name__)
 
@@ -67,6 +69,8 @@ def image_uplode():
         writer = csv.writer(f)
         writer.writerow(header)
         f.close()
+
+    
 
     return render_template('upload.html')
 
