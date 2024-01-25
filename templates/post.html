@@ -45,9 +45,43 @@
         <p><input type="button" id="btnAdd" value="+"></p>
     </header>
 
-    <form action="/result" method="POST" enctype="multipart/form-data">
-        <div class="upload-area">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>コメント投稿</p>
+    <div class="upload-area">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>コメント投稿</p>
 
-        </div>
+    </div>
+    <table border=1>
+        {% for line in lines: %}
+        {% set column = line.rstrip().split(',') %}
+        <tr>
+            <td>{{column[0]}}</td>
+            <td>{{column[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form action='/result' method='post'>
+        <label for='name'>名前</label>
+        <input type='text' name='name'>
+        <p></p>
+        <label for='article'>投稿</label>
+        <input type='text' name='article'>
+        <input type="hidden" name="image_name" value="{{ image_name }}">
+        <button type='subimit'>書き込む</button>
+    </form>
+
+
+    <dl class="thread" style="margin-top: 0px;">
+
+        <div id="" fb-root></div>
+        <script async defer crossorigin="anonymous" src=""></script>
+
+        <!-- <input type="submit" value="投稿" name="submit"> -->
+        <ul>
+            <li><a class="active" href="/">ホーム</a></li>
+            <li><a href="/upload">投稿(アップロード)</a></li>
+        </ul>
+    </dl>
+</body>
+
+</html>
