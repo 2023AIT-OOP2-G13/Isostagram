@@ -50,6 +50,10 @@ def image_uplode():
 
     #.htmlから画像を取得
     file = request.files['upload_file']
+    if not file :
+        errormessage = ('画像が添付されていません')
+        return render_template('upload.html')
+
     #image_fileに取得した画像を追加
     filename = os.path.join(app.config['UPLOAD_FOLDER'],file.filename)
     #保存
