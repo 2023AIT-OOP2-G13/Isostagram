@@ -1,5 +1,4 @@
 from flask import Flask,request,render_template, jsonify
-from flask import Flask,request,render_template, jsonify
 import os
 import glob
 import csv
@@ -167,6 +166,51 @@ def update_count():
 
     return jsonify(success=True)
 
+
+def csv_comment_view():
+    filename = 'static/csv_file/sample.csv'
+    with open(filename) as f:
+        csvreader = csv.reader(f)
+        for row in csvreader:
+            print(row)
+class CountManager:
+    def __init__(self):
+        self.initial_count = 0
+
+    def read_initial_count_from_csv(self):
+        try:
+            with open('static/csv_file/sample.csv', 'r') as file:
+                reader = csv.reader(file)
+                # CSVファイルからカウンターの初期値を読み取る
+                for row in reader:
+                    self.initial_count = int(row[0])
+                    break  # 最初の行だけ読み取る
+        except FileNotFoundError:
+            # ファイルが見つからない場合などのエラー処理
+            print("CSV file not found.")
+
+
+# CountManagerのインスタンスを作成
+count_manager = CountManager()
+
+@app.route('/update_count', methods=['POST'])
+def update_count():
+    global initial_count
+    data = request.get_json()
+    new_count = data.get('count', 0)
+
+    # カウントを更新
+    count_manager.initial_count = new_count
+
+    # CSVに書き込み
+    with open('static/csv_file/sample.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([new_count])
+
+    return jsonify(success=True)
+
+
+        
 #app = Flask(__name__)
 # def csv_comment_view():
 #     filename = 'static/csv_file/sample.csv'

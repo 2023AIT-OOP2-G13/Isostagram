@@ -7,32 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
 </head>
 
-<script>
-    let counter, btnAdd;
-    let n;
-
-    function addCount() {
-        n++;
-        counter.innerHTML = n;
-
-        // カウントが増えたらサーバーサイドに送信
-        fetch('/update_count', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ count: n }),
-        });
-    }
-
-    window.addEventListener("load", () => {
-        // 起動時の処理
-        counter = document.getElementById("counter");
-        btnAdd = document.getElementById("btnAdd");
-        n = 0;
-        btnAdd.addEventListener("click", addCount);
-    });
-</script>
 
 <body>
     <header>
@@ -47,7 +21,7 @@
 
         <div class="file-upload">
             <input type="file" name="upload_file" id="input-files">
-<!--             <input type="file" name="upload_file" accept=".png, .jpg, .jpeg" required id="input-files"> -->
+            <!--             <input type="file" name="upload_file" accept=".png, .jpg, .jpeg" required id="input-files"> -->
         </div>
 
         <label for="name">題名:</label>
@@ -64,9 +38,6 @@
 
     </form>
     <br>
-
-    <p id="counter">{{ initial_count }}</p>
-    <p><input type="button" id="btnAdd" value="+"></p>
 </body>
 
 </html>
