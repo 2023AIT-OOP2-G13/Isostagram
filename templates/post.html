@@ -23,23 +23,8 @@
             <p>コメント投稿</p>
 
         </div>
-
-
-
-        <div class="upload-area">
-
-            <p>
-                <img src="20240111154934.jpg" alt="外部の画像">
-            </p>
-        </div>
         <table border=1>
-            <tr>
-                <th>名前</th>
-                <th>投稿内容</th>
-            </tr>
             {% for line in lines: %}
-            <!--columnという変数をセット（変数セットにはsetが必要）  -->
-            <!--splitを利用して,で分類する。splitはリストを返す  -->
             {% set column = line.rstrip().split(',') %}
             <tr>
                 <td>{{column[0]}}</td>
@@ -54,7 +39,7 @@
             <p></p>
             <label for='article'>投稿</label>
             <input type='text' name='article'>
-
+            <input type="hidden" name="image_name" value="{{ image_name }}">
             <button type='subimit'>書き込む</button>
         </form>
 
