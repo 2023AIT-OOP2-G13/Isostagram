@@ -34,16 +34,24 @@
     padding: 1em 0;
   }
   
- 
-
-
-  .h1 {
-    position: relative;
+  h1 {
+    margin: 0;
     font-size: 60px;
-    opacity: 0; /* 初めは透明に設定 */
-    transform: translateY(100%); /* 下からスライドするために位置を下に設定 */
-    animation: fadeInFromBottom 1s forwards; /* フェードインアニメーションの設定 */
-  }
+      font-weight: bold;
+      animation: slideIn 1s ease-out;
+    }
+    
+    @keyframes slideIn {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
   
   @keyframes fadeInFromBottom {
     to {
