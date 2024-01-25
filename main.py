@@ -76,7 +76,7 @@ def contents_page(image_name):
     image=image_name+'.jpg'
 
     #with openしてcsvファイルを読み込む
-    with open('static/csv_file/'+image_name+'.csv',encoding='utf-8') as f:
+    with open('static/csv_file/20240111154934.csv',encoding='utf-8') as f:
 #     with open('static/csv_file/sample.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
 
