@@ -1,4 +1,5 @@
 from flask import Flask,request,render_template, jsonify
+from flask import Flask,request,render_template, jsonify
 import os
 import glob
 import csv
@@ -40,6 +41,7 @@ def top_page():
 @app.route('/upload')
 def upload_page():
     
+    return render_template('upload.html',initial_count=count_manager.initial_count)
     return render_template('upload.html',initial_count=count_manager.initial_count)
 
 
@@ -129,13 +131,6 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         newpath = 'static/image_file/'+upload_time+'.jpg'
         os.rename(oldpath, newpath)
         
-
-def csv_comment_view():
-    filename = 'static/csv_file/sample.csv'
-    with open(filename) as f:
-        csvreader = csv.reader(f)
-        for row in csvreader:
-            print(row)
 class CountManager:
     def __init__(self):
         self.initial_count = 0
@@ -190,6 +185,8 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, DIR_WATCH, recursive=True)
     observer.start()
+    count_manager.read_initial_count_from_csv()
+    print(count_manager.initial_count)
     count_manager.read_initial_count_from_csv()
     print(count_manager.initial_count)
     app.run(debug=False)
