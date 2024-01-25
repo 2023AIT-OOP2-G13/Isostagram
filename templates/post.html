@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename='design4.css') }}">
-        <title></title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='design4.css') }}">
+    <title></title>
+</head>
 
-    <body>
-        <header>
-            <h1>isostagram</h1>
-            {% set column = lines[0].rstrip().split(',') %}
-            <p>{{column[3]}}</p>
-            <img src="{{ url_for('static', filename='image_file/' + image) }}" width="25%" height="225">
-            <p>いいね数：{{column[2]}}</p>
-        </header>
+<style>
+    .line-container {
+        border: 1px solid #789922;
+        background-color: #f7f7f7;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
 
-        <form action="/result" method="POST" enctype="multipart/form-data">
+    p {
+        margin: 0;
+        /* 段落のマージンを0に設定 */
+        font-size: 14px;
+        /* フォントサイズを調整 */
+        color: #333;
+        /* テキストの色を調整 */
+    }
+</style>
+
+<body>
+    <header>
+        <h1>isostagram</h1>
+        {% set column = lines[0].rstrip().split(',') %}
+        <p>{{column[3]}}</p>
+        <img src="{{ url_for('static', filename='image_file/' + image) }}" width="25%" height="225">
+        <p>いいね数：{{column[2]}}</p>
+    </header>
+
+    <form action="/result" method="POST" enctype="multipart/form-data">
         <div class="upload-area">
             <i class="fas fa-cloud-upload-alt"></i>
             <p>コメント投稿</p>
 
         </div>
         <table border=1>
-            {% for line in lines: %}
+            {% for line in lines[1:] %}
             {% set column = line.rstrip().split(',') %}
-            <tr>
-                <td>{{column[0]}}</td>
-                <td>{{column[1]}}</td>
-            </tr>
+            <div class="line-container">
+                <p>{{ column[2] }}</p>
+                <p>{{ column[0] }}</p>
+                <p>{{ column[1] }}</p>
+            </div>
             {% endfor %}
         </table>
 
@@ -55,5 +75,6 @@
                 <li><a href="/upload">投稿(アップロード)</a></li>
             </ul>
         </dl>
-    </body>
+</body>
+
 </html>
