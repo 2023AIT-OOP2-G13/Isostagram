@@ -81,12 +81,12 @@ def image_uplode():
 def contents_page(image_name):
     lines = []
     image=image_name+'.jpg'
-
+    file_path = 'static/csv_file/'+image_name+'.csv'
     #with openしてcsvファイルを読み込む
     with open('static/csv_file/'+image_name+'.csv',encoding='utf-8') as f:
-#     with open('static/csv_file/sample.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
 
+    count_manager.read_initial_count_from_csv(file_path)
     return render_template('post.html',lines=lines ,image_name=image_name,image=image)
 
 
@@ -128,40 +128,62 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         oldpath = filepath
         newpath = 'static/image_file/'+upload_time+'.jpg'
         os.rename(oldpath, newpath)
-        
+
 class CountManager:
     def __init__(self):
         self.initial_count = 0
+        self.file_path = None
 
-    def read_initial_count_from_csv(self):
+    def read_initial_count_from_csv(self, file_path):
+        self.file_path = file_path
         try:
-            with open('static/csv_file/sample.csv', 'r') as file:
+            with open(file_path, 'r') as file:
                 reader = csv.reader(file)
                 # CSVファイルからカウンターの初期値を読み取る
                 for row in reader:
-                    self.initial_count = int(row[0])
+                    self.initial_count = int(row[2])
+                    print(self.initial_count)
                     break  # 最初の行だけ読み取る
         except FileNotFoundError:
             # ファイルが見つからない場合などのエラー処理
             print("CSV file not found.")
 
+    def update_count(self, new_count):
+        self.initial_count = new_count
+        if self.file_path is None:
+            print("File path is not set.")
+            return jsonify(success=False, error="File path is not set.")
+
+        #print(self.file_path)
+        try:
+            # CSVファイルを読み取りモードで開く
+            with open(self.file_path, 'r', newline='') as file:
+                reader = csv.reader(file)
+                data = list(reader)  # CSVの内容をリストとして取得
+                new_count += int(data[0][2])
+                data[0][2] = new_count
+
+            # 変更したデータをCSVファイルに書き込み
+            with open(self.file_path, 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerows(data)
+
+            return jsonify(success=True)
+        except FileNotFoundError:
+            print("CSV file not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 # CountManagerのインスタンスを作成
 count_manager = CountManager()
 
 @app.route('/update_count', methods=['POST'])
 def update_count():
-    global initial_count
     data = request.get_json()
     new_count = data.get('count', 0)
 
     # カウントを更新
-    count_manager.initial_count = new_count
-
-    # CSVに書き込み
-    with open('static/csv_file/sample.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([new_count])
+    count_manager.update_count(new_count)
 
     return jsonify(success=True)
 
@@ -171,23 +193,7 @@ def csv_comment_view():
     with open(filename) as f:
         csvreader = csv.reader(f)
         for row in csvreader:
-            print(row)
-class CountManager:
-    def __init__(self):
-        self.initial_count = 0
-
-    def read_initial_count_from_csv(self):
-        try:
-            with open('static/csv_file/sample.csv', 'r') as file:
-                reader = csv.reader(file)
-                # CSVファイルからカウンターの初期値を読み取る
-                for row in reader:
-                    self.initial_count = int(row[0])
-                    break  # 最初の行だけ読み取る
-        except FileNotFoundError:
-            # ファイルが見つからない場合などのエラー処理
-            print("CSV file not found.")
-        
+            print(row)   
 #app = Flask(__name__)
 # def csv_comment_view():
 #     filename = 'static/csv_file/sample.csv'
@@ -206,10 +212,6 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, DIR_WATCH, recursive=True)
     observer.start()
-    count_manager.read_initial_count_from_csv()
-    print(count_manager.initial_count)
-    count_manager.read_initial_count_from_csv()
-    print(count_manager.initial_count)
     app.run(debug=False)
     try:
         while True:
