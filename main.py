@@ -1,10 +1,9 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template, jsonify
 import os
 import glob
 import csv
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-from flask import Flask
 import time
 import datetime
 
@@ -41,7 +40,7 @@ def top_page():
 @app.route('/upload')
 def upload_page():
     
-    return render_template('upload.html')
+    return render_template('upload.html',initial_count=count_manager.initial_count)
 
 
 #アップロードされた画像の保存とcsvファイルの作成
@@ -50,6 +49,10 @@ def image_uplode():
 
     #.htmlから画像を取得
     file = request.files['upload_file']
+    if not file :
+        errormessage = ('画像が添付されていません')
+        return render_template('upload.html')
+
     #image_fileに取得した画像を追加
     filename = os.path.join(app.config['UPLOAD_FOLDER'],file.filename)
     #保存
@@ -78,12 +81,12 @@ def image_uplode():
 def contents_page(image_name):
     lines = []
     image=image_name+'.jpg'
-
+    file_path = 'static/csv_file/'+image_name+'.csv'
     #with openしてcsvファイルを読み込む
     with open('static/csv_file/'+image_name+'.csv',encoding='utf-8') as f:
-#     with open('static/csv_file/sample.csv',encoding='utf-8') as f:
         lines = f.readlines() #readlinesはリスト形式でcsvの内容を返す
 
+    count_manager.read_initial_count_from_csv(file_path)
     return render_template('post.html',lines=lines ,image_name=image_name,image=image)
 
 
@@ -126,14 +129,79 @@ class MyFileWatchHandler(PatternMatchingEventHandler):
         oldpath = filepath
         newpath = 'static/image_file/'+upload_time+'.jpg'
         os.rename(oldpath, newpath)
-        
+
+class CountManager:
+    def __init__(self):
+        self.initial_count = 0
+        self.file_path = None
+
+    def read_initial_count_from_csv(self, file_path):
+        self.file_path = file_path
+        try:
+            with open(file_path, 'r') as file:
+                reader = csv.reader(file)
+                # CSVファイルからカウンターの初期値を読み取る
+                for row in reader:
+                    self.initial_count = int(row[2])
+                    print(self.initial_count)
+                    break  # 最初の行だけ読み取る
+        except FileNotFoundError:
+            # ファイルが見つからない場合などのエラー処理
+            print("CSV file not found.")
+
+    def update_count(self, new_count):
+        self.initial_count = new_count
+        if self.file_path is None:
+            print("File path is not set.")
+            return jsonify(success=False, error="File path is not set.")
+
+        #print(self.file_path)
+        try:
+            # CSVファイルを読み取りモードで開く
+            with open(self.file_path, 'r', newline='') as file:
+                reader = csv.reader(file)
+                data = list(reader)  # CSVの内容をリストとして取得
+                new_count += int(data[0][2])
+                data[0][2] = new_count
+
+            # 変更したデータをCSVファイルに書き込み
+            with open(self.file_path, 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerows(data)
+
+            return jsonify(success=True)
+        except FileNotFoundError:
+            print("CSV file not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+# CountManagerのインスタンスを作成
+count_manager = CountManager()
+
+@app.route('/update_count', methods=['POST'])
+def update_count():
+    data = request.get_json()
+    new_count = data.get('count', 0)
+
+    # カウントを更新
+    count_manager.update_count(new_count)
+
+    return jsonify(success=True)
+
 
 def csv_comment_view():
     filename = 'static/csv_file/sample.csv'
     with open(filename) as f:
         csvreader = csv.reader(f)
         for row in csvreader:
-            print(row)
+            print(row)   
+#app = Flask(__name__)
+# def csv_comment_view():
+#     filename = 'static/csv_file/sample.csv'
+#     with open(filename) as f:
+#         csvreader = csv.reader(f)
+#         for row in csvreader:
+#             print(row)
 
 if __name__ == "__main__":
     #監視するファイルの指定

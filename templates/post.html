@@ -27,13 +27,52 @@
     }
 </style>
 
+<script>
+    let counter, btnAdd;
+    let n;
+    function addCount() {
+        n++;
+        counter.innerHTML = "+ " + n;
+
+        if (n >= 10) {
+            btnAdd.disabled = true;
+            message.style.display = "block"; // メッセージを表示
+        }
+
+        //'static/csv_file/'+image_name+'.csv',encoding='utf-8'
+        // カウントが増えたらサーバーサイドに送信
+        fetch('/update_count', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ count: 1 }),
+        });
+    }
+
+    window.addEventListener("load", () => {
+        // 起動時の処理
+        counter = document.getElementById("counter");
+        btnAdd = document.getElementById("btnAdd");
+        n = 0;
+        btnAdd.addEventListener("click", () => {
+            addCount();
+            //location.reload(); // ボタンが押されたらページを再読み込み
+        });
+    });
+</script>
+
 <body>
     <header>
         <h1>isostagram</h1>
         {% set column = lines[0].rstrip().split(',') %}
         <p>{{column[3]}}</p>
         <img src="{{ url_for('static', filename='image_file/' + image) }}" width="25%" height="225">
-        <p>いいね数：{{column[2]}}</p>
+        <p>いいね数:{{column[2]}}</p>
+        <p id="counter">+ 0</p>
+        <p><input type="button" id="btnAdd" value="+"></p>
+        <p id="message" style="display: none; color: red;">10回いいねしました！</p>
+
     </header>
 
     <form action="/result" method="POST" enctype="multipart/form-data">
@@ -44,39 +83,39 @@
         </div>
 
     </form>
-        <table border=1>
-            {% for line in lines[1:] %}
-            {% set column = line.rstrip().split(',') %}
-            <div class="line-container">
-                <p>{{ column[2] }}</p>
-                <p>{{ column[0] }}</p>
-                <p>{{ column[1] }}</p>
-            </div>
-            {% endfor %}
-        </table>
+    <table border=1>
+        {% for line in lines[1:] %}
+        {% set column = line.rstrip().split(',') %}
+        <div class="line-container">
+            <p>{{ column[2] }}</p>
+            <p>{{ column[0] }}</p>
+            <p>{{ column[1] }}</p>
+        </div>
+        {% endfor %}
+    </table>
 
-        <form action='/result' method='post'>
-            <label for='name'>名前</label>
-            <input type='text' name='name'>
-            <p></p>
-            <label for='article'>投稿</label>
-            <input type='text' name='article'>
-            <input type="hidden" name="image_name" value="{{ image_name }}">
-            <button type='subimit'>書き込む</button>
-        </form>
+    <form action='/result' method='post'>
+        <label for='name'>名前</label>
+        <input type='text' name='name'>
+        <p></p>
+        <label for='article'>投稿</label>
+        <input type='text' name='article'>
+        <input type="hidden" name="image_name" value="{{ image_name }}">
+        <button type='subimit'>書き込む</button>
+    </form>
 
 
-        <dl class="thread" style="margin-top: 0px;">
+    <dl class="thread" style="margin-top: 0px;">
 
-            <div id="" fb-root></div>
-            <script async defer crossorigin="anonymous" src=""></script>
+        <div id="" fb-root></div>
+        <script async defer crossorigin="anonymous" src=""></script>
 
-            <!-- <input type="submit" value="投稿" name="submit"> -->
-            <ul>
-                <li><a class="active" href="/">ホーム</a></li>
-                <li><a href="/upload">投稿(アップロード)</a></li>
-            </ul>
-        </dl>
+        <!-- <input type="submit" value="投稿" name="submit"> -->
+        <ul>
+            <li><a class="active" href="/">ホーム</a></li>
+            <li><a href="/upload">投稿(アップロード)</a></li>
+        </ul>
+    </dl>
 </body>
 
 </html>
