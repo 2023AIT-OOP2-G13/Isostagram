@@ -8,6 +8,25 @@
     <title></title>
 </head>
 
+<style>
+    .line-container {
+        border: 1px solid #789922;
+        background-color: #f7f7f7;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    p {
+        margin: 0;
+        /* 段落のマージンを0に設定 */
+        font-size: 14px;
+        /* フォントサイズを調整 */
+        color: #333;
+        /* テキストの色を調整 */
+    }
+</style>
+
 <script>
     let counter, btnAdd;
     let n;
@@ -55,18 +74,22 @@
         <p id="message" style="display: none; color: red;">10回いいねしました！</p>
     </header>
 
-    <div class="upload-area">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <p>コメント投稿</p>
+    <form action="/result" method="POST" enctype="multipart/form-data">
+        <div class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>コメント投稿</p>
 
-    </div>
+        </div>
+
+    </form>
     <table border=1>
-        {% for line in lines: %}
+        {% for line in lines[1:] %}
         {% set column = line.rstrip().split(',') %}
-        <tr>
-            <td>{{column[0]}}</td>
-            <td>{{column[1]}}</td>
-        </tr>
+        <div class="line-container">
+            <p>{{ column[2] }}</p>
+            <p>{{ column[0] }}</p>
+            <p>{{ column[1] }}</p>
+        </div>
         {% endfor %}
     </table>
 
